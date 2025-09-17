@@ -15,3 +15,12 @@ export interface Profile {
   name: string;
   bio: string;
   tech_stack: string[];
+  id: string;
+  name: string;
+  bio: string;
+  tech_stack: string[];
+  avatar_url: string;
+}
+
+interface Props {
+  profile: Profile;
