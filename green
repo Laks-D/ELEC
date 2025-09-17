@@ -9,7 +9,15 @@ export interface Profile {
   tech_stack: string[];
   avatar_url: string;
 }
+  id: string;
+  name: string;
+  bio: string;
+  tech_stack: string[];
+  avatar_url: string;
+}
 
+interface Props {
+  profile: Profile;
 interface Props {
   profile: Profile;
   onLike: () => void;
