@@ -1,0 +1,23 @@
+import fitz  # PyMuPDF
+import sys
+import os
+
+def pdf_to_png(pdf_path, out_dir):
+    if not os.path.exists(pdf_path):
+        print(f"Error: PDF file not found: {pdf_path}")
+        sys.exit(1)
+    os.makedirs(out_dir, exist_ok=True)
+    doc = fitz.open(pdf_path)
+    print("Pages in PDF:", doc.page_count)
+    for i in range(doc.page_count):
+        page = doc.load_page(i)
+        pix = page.get_pixmap(dpi=200)
+        out_path = os.path.join(out_dir, f"page_{i+1}.png")
+        pix.save(out_path)
+        print("Saved:", out_path)
+    print("Done. Converted", doc.page_count, "pages.")
+
+if __name__ == "__main__":
+    pdf_path = sys.argv[1] if len(sys.argv) > 1 else "data\uploads\tangedco_sample_bills.pdf"
+    out_dir = sys.argv[2] if len(sys.argv) > 2 else "data/converted"
+    pdf_to_png(pdf_path, out_dir)
