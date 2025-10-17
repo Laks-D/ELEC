@@ -1,1 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WhatAmp MVP</title>
+</head>
+<body>
+  <h2>WhatAmp — Upload TNEB Bill</h2>
+  <input id="fileinp" type="file" accept="image/*,application/pdf"/>
+  <button id="upload">Upload</button>
+  <pre id="out"></pre>
+  <audio id="player" controls></audio>
+<script>
+document.getElementById('upload').onclick = async () => {
+  const f = document.getElementById('fileinp').files[0];
+  if (!f) return alert("Choose a file first");
+  const fd = new FormData();
+  fd.append('file', f, f.name);
+  document.getElementById('out').textContent = "Uploading...";
+  const res = await fetch('http://127.0.0.1:8000/upload', { method: 'POST', body: fd });
+  const json = await res.json();
+  document.getElementById('out').textContent = JSON.stringify(json, null, 2);
+  if (json.tamil_audio) {
+    const player = document.getElementById('player');
+    // For local file returned as path, fetch it
+    const audioRes = await fetch(json.tamil_audio);
+    const blob = await audioRes.blob();
+    const url = URL.createObjectURL(blob);
+    player.src = url;
+    player.play();
+  }
+}
+</script>
+</body>
+</html>
 
